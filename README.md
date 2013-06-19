@@ -40,7 +40,7 @@ Edit the html file of the page that you want to place Movement Timeline on. Firs
 
 Next, add the following code inside the <head> tag of your html document:
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type="text/javascript" src="./js/jquery.csv-0.71.min.js"></script>
 	<script type="text/javascript" src="./js/timeline.js"></script>
 	<link rel="stylesheet" type="text/css" href="./styles/timeline.css" />
