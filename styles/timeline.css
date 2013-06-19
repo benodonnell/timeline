@@ -1,0 +1,75 @@
+/* Copyright 2013 Benjamin O'Donnell */
+/* This file is part of MovementTimeline.
+
+    MovementTimeline is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    MovementTimeline is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with MovementTimeline.  If not, see <http://www.gnu.org/licenses/>. */
+
+#timeline
+{
+	padding: 20px;
+	font-family: Futura, Century Gothic, Helvetica, Sans-Serif;
+}
+
+#timeline span.comment
+{
+    position: absolute;
+    width: 400px;
+    padding: 4px 16px 4px 8px;
+    background: rgb(240, 240, 240);
+	border: 3px black solid;
+	display: none;
+	margin-left: 150px;
+}
+
+#timeline .event
+{
+	margin-left: 18em;
+	margin-bottom: 1em;
+}
+
+#timeline .eventTitle a
+{
+	text-decoration: underline;
+	color: black;
+}
+
+#timeline .line
+{
+	width: 3px;
+	z-index: 1000;
+	-webkit-transform-origin: top left;
+    -moz-transform-origin: top left;
+    -o-transform-origin: top left;
+    -ms-transform-origin: top left;
+    transform-origin: top left;
+}
+
+#timeline .month 
+{
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: small;
+}
+
+#timeline .people
+{
+	font-size: small;
+	padding-left: 2em;
+}
+
+#timeline .yearNum
+{
+	font-weight: bold;
+	float: left;
+	font-size: x-large;
+}
