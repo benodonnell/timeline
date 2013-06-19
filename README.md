@@ -23,7 +23,7 @@ Export the spreadsheet data to .csv format and name the file "TimelineData.csv".
 4. Upload the files to your web server
 ======================================
 
-Upload the files inside the "js" directory in the source folder to the "js" directory on your web server. (Create a "js" directory if it doesn't already exist.) There should be 3 files in there: jquery-1.9.1.min.js, jquery.csv-0.71.min.js, and timeline.js.
+Upload the files inside the "js" directory in the source folder to the "js" directory on your web server. (Create a "js" directory if it doesn't already exist.) There should be 2 files in there: jquery.csv-0.71.min.js, and timeline.js.
 
 Upload the css file called "timeline.css" inside the "styles" directory to the "styles" directory on your web server. Create a "styles" directory if it doesn't already exist.
 
@@ -40,7 +40,7 @@ Edit the html file of the page that you want to place Movement Timeline on. Firs
 
 Next, add the following code inside the <head> tag of your html document:
 
-	<script type="text/javascript" src="./js/jquery-1.9.1.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type="text/javascript" src="./js/jquery.csv-0.71.min.js"></script>
 	<script type="text/javascript" src="./js/timeline.js"></script>
 	<link rel="stylesheet" type="text/css" href="./styles/timeline.css" />
