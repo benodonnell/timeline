@@ -14,14 +14,27 @@
     You should have received a copy of the GNU General Public License
     along with MovementTimeline.  If not, see <http://www.gnu.org/licenses/>.*/
 
-timeline = null;
-timelineDiv = null;
-colorFunction = dimmerColor;
-initSat = 0.9; //This must be a number between 0 and 1.
-minSat = 0.45; //This must be a number between 0 and 1. It should be less than initSat in order to have any effect.
-initVal = 0.85; //This must be a number between 0 and 1.
-minVal = 0.75; //This must be a number between 0 and 1. It should be less than initVal in order to have any effect.
+var outputDiv = null;
+var timelineDefaults = {};
+timelineDefaults.timeline = null;
 
+timelineDefaults.timelineFileURL = "./TimelineData.csv"; //This string should point to the location of the data file. It can be any url (relative or absolute) that won't violate the same origin policy.
+timelineDefaults.timelineDivSelector = "#timeline"; //This string is passed to JQuery to obtain the element that will contain the timeline. The easiest thing is just to use an id such as #timeline, but any valid selector will work.
+
+timelineDefaults.colorFunction = dimmerColor; //This is a function that returns an HSVColor object. dimmerColor is a function that will create a gradient of shades of the same color for each year. blackColor will make all the connecting lines black. brightColor will make each connecting line a different, very bright color--psychedelic but harder to read.
+
+//The following defaults are used only by the dimmerColor function to fine-tune the look of the diagonal lines.
+timelineDefaults.initSat = 0.9; //This must be a number between 0 and 1.
+timelineDefaults.minSat = 0.40; //This must be a number between 0 and 1. It should be less than initSat in order to have any effect.
+timelineDefaults.initVal = 0.85; //This must be a number between 0 and 1.
+timelineDefaults.minVal = 0.70; //This must be a number between 0 and 1. It should be less than initVal in order to have any effect.
+
+//This function does the work of drawing a line between two divs.
+//Parameters:
+//year is the left div that the line will go between
+//event is the right div
+//horizontalPadding is a positive int that controls how much space will be placed between the line and the divs it connects.
+//initColor is an HSVColor object that gets passed to the color-selection function set by movementTimeline.colorFunction. Some colorFunctions will ignore this value, but others require it to create gradients.
 function drawLine(year, event, horizontalPadding, initColor) {
 	var yearPos = year.offset();
 	var eventPos = event.offset();
@@ -51,13 +64,14 @@ function drawLine(year, event, horizontalPadding, initColor) {
     .css('-ms-transform', 'rotate(' + angle + 'deg)')
     .css('transform', 'rotate(' + angle + 'deg)');
     
-   	var color = colorFunction(initColor);
+   	var color = timelineDefaults.colorFunction(initColor);
    	line.css("background-color", "rgb(" + color.red + "," + color.green + ","+ color.blue + ")");
 
-	timelineDiv.append(line);
+	this.outputDiv.append(line);
 }
 
-function HSVColor() {
+//HSVColor is an object to represent colors using the HSV model.
+HSVColor = function() {
 	this.hue = 0;
 	this.saturation = 0;
 	this.value = 0;
@@ -151,13 +165,13 @@ function dimmerColor(color) {
 	color.saturation -= .05;
 //	color.value -= .005;
 
-	if (color.saturation < minSat)
+	if (color.saturation < timelineDefaults.minSat)
 	{
-		color.saturation = minSat;
+		color.saturation = timelineDefaults.minSat;
 	}
-	if (color.value < minVal)
+	if (color.value < timelineDefaults.minVal)
 	{
-		color.value = minVal;
+		color.value = timelineDefaults.minVal;
 	}
 
 	if (color.saturation < 0)
@@ -172,14 +186,15 @@ function dimmerColor(color) {
 	return (color.toRGB());
 }
 
+//This function takes a csv string as input and uses the content of the string to generate the timeline.
 function generateTimeline(csv) {
-	timeline = $.csv.toObjects(csv);
+	var timeline = $.csv.toObjects(csv);
 
 	var currentYear = null;
 	var currentYearNum = null;
 	var currentColor = null;
 
-	//Print some test data
+	//Print some data
 	for (i=0;i<timeline.length;i++){
 		//Check that there is *some* data in this row. Otherwise skip to the next row.
 		if (timeline[i]["Year"] != "" || timeline[i]["Milestone/Organization"] !="" || timeline[i]["People"] != "" || timeline[i]["URL"] != "" || timeline[i]["Comments"] != "" || timeline[i]["Month"] != "") {	
@@ -188,15 +203,15 @@ function generateTimeline(csv) {
 			{
 				//unless we're on the first div, we through a <br /> in for good measure. Otherwise years with no data won't display correctly.
 				if (currentYear != null){
-					timelineDiv.append("<br />");
+					outputDiv.append("<br />");
 				}
 				currentYearNum = timeline[i]["Year"];
 				currentColor = new HSVColor();
-				currentColor.randomHue(initSat, initVal);
-				var colors = colorFunction(currentColor);
+				currentColor.randomHue(timelineDefaults.initSat, timelineDefaults.initVal);
+				var colors = timelineDefaults.colorFunction(currentColor);
 				currentYear = $("<div>", {class: "year"});
 				currentYear.append($("<div>", {class: "yearNum"}).text(timeline[i]["Year"]).css("color", "rgb(" + colors.red + "," + colors.green + "," + colors.blue + ")"));
-				timelineDiv.append(currentYear);
+				outputDiv.append(currentYear);
 			}
 			
 			//create the event div:
@@ -230,14 +245,16 @@ function generateTimeline(csv) {
 }
 
 function loadTimeline() {
-	timelineDiv = $("#timeline");
-	$.get("./TimelineData.csv", {}, generateTimeline, "text");
+	outputDiv = $(timelineDefaults.timelineDivSelector);
+	$.get(timelineDefaults.timelineFileURL, {}, generateTimeline, "text");
 }
 
+//Function to fade in the comment field.
 function showComment() {
 	$(this).find(".comment").fadeIn();
 }
 
+//Function to fade out the comment field.
 function hideComment() {
 	$(this).find(".comment").css("display", "none");
 }
