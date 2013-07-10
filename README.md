@@ -1,4 +1,4 @@
-Movement Timeline is a free bit of software that makes it simple to display timelines in a horizontal format. See http://thirdolive.com/timeline for an example.
+Movement Timeline is a free bit of software that makes it simple to display timelines in a vertical format. See http://thirdolive.com/timeline for an example.
 
 Instructions
 ============
